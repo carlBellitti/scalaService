@@ -1,0 +1,32 @@
+# Should be added to .gitignore-global, but leaving here for now
+.DS_Store
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Intellij specific
+.idea*/
+*.iml
+
+temp/
+
+# Acceptance test artifacts
+acceptance-tests/package-lock.json
+acceptance-tests/node_modules
+
+commit-hash
+
+npm-debug.log
+
+secrets.conf
+
+*.pyc
+.java-version
