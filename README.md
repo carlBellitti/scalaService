@@ -17,6 +17,10 @@
 ### Routes
 - There are multiple routes pre-configured for adding users, deleting etc.
 - However, I have only focused on one that is 'http://localhost:8080/users', and that is being leveraged to retrieve all of the users.
+- An additional route was added to serve static files (html) - 'http://localhost:8080/client' - this should display the index.html page that is in the 'resources/client' folder
+
+## Serving Static Files
+- Static files are served using the .../client' route.  Files are located in the 'resources/client' folder.  What is interesting, is that if you modify the static file (like index.html), you only have to re-run the service, not re-compile.
 
 ### Running
 - sbt compile
