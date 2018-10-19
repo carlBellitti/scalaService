@@ -3,17 +3,17 @@ package com.example
 //#user-registry-actor
 import scala.concurrent.ExecutionContext.Implicits.global
 import akka.actor.{ Actor, ActorLogging, Props }
-import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.server.Directives.onSuccess
-import akka.http.scaladsl.server.directives.RouteDirectives.complete
-import com.example.QuickstartServer.{ log, userRegistryActor }
-import slick.jdbc.MySQLProfile.api._
+import com.example.integrations.mysql._
 
-import scala.concurrent.Future
 import scala.util.{ Failure, Success }
 
+final case class UserId(value: Int) extends AnyVal
+final case class UserName(value: String) extends AnyVal
+final case class UserAge(value: Int) extends AnyVal
+final case class UserCountry(value: String) extends AnyVal
+
 //#user-case-classes
-final case class User(id: Int, name: String, age: Int, countryOfResidence: String)
+final case class User(id: UserId, name: UserName, age: UserAge, countryOfResidence: UserCountry)
 final case class Users(users: Seq[User])
 //#user-case-classes
 
@@ -32,7 +32,7 @@ class UserRegistryActor extends Actor with ActorLogging {
   import UserRegistryActor._
 
   var users = Set.empty[User]
-  var testUser = User(100, "Joe Schmoe", 42, "Italy")
+  var testUser = User(UserId(100), UserName("Joe Schmoe"), UserAge(42), UserCountry("Italy"))
   // Initialize users with values from Database when app first launches
   // Consider moving the onComplete stuff later
   val u = DBUtils.getUsers
@@ -40,9 +40,9 @@ class UserRegistryActor extends Actor with ActorLogging {
   u onComplete {
     case Success(results) => {
       results.foreach {
-        case (id, name, age, countryOfOrigin) =>
-          println("id: " + id + ", name: " + name + ", age: " + age + ", country: " + countryOfOrigin)
-          val user = User(id, name, age, countryOfOrigin)
+        case UserRow(id: Int, name:String, age:Int, countryOfResidence:String) =>
+          println("id: " + id + ", name: " + name + ", age: " + age + ", country: " + countryOfResidence)
+          val user = User(UserId(id), UserName(name), UserAge(age), UserCountry(countryOfResidence))
           users += user
       }
       println("Here a the users")
@@ -51,9 +51,6 @@ class UserRegistryActor extends Actor with ActorLogging {
       println("Error " + e.getMessage)
     }
   }
-
-  //val db = Database.forConfig("mysql")
-  //val tableUsers: TableQuery[UserTable] = TableQuery[UserTable]
 
   def receive: Receive = {
     case GetUsers =>
