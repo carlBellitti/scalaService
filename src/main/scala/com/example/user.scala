@@ -20,7 +20,7 @@ final case class Users(users: Set[User])
 
 object UserRegistryActor {
   final case class ActionPerformed(description: String)
-  final case object GetUsers
+  final case object GetUsersJson
 //  final case class CreateUser(user: User)
 //  final case class GetUser(name: String)
 //  final case class DeleteUser(name: String)
@@ -55,7 +55,7 @@ class UserRegistryActor extends Actor with ActorLogging {
   }
 
   def receive: Receive = {
-    case GetUsers =>
+    case GetUsersJson =>
       // sender() ! Users(users.toSeq)
       sender() ! UserJson.fromUsers(Users(users))
 //    case CreateUser(user) =>

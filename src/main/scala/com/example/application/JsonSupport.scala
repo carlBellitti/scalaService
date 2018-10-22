@@ -5,9 +5,9 @@ import com.example.UserRegistryActor.ActionPerformed
 import com.example.integrations.web.{UserJson, UsersJson}
 import spray.json.DefaultJsonProtocol
 
-trait JsonSupport extends SprayJsonSupport {
+trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   // import the default encoders for primitive types (Int, String, Lists etc)
-  import DefaultJsonProtocol._
+  // import DefaultJsonProtocol._
 
   implicit val userJsonFormat = jsonFormat4(UserJson)
   implicit val usersJsonFormat = jsonFormat1(UsersJson)
