@@ -14,22 +14,24 @@ final case class UserCountry(value: String) extends AnyVal
 
 //#user-case-classes
 final case class User(id: UserId, name: UserName, age: UserAge, countryOfResidence: UserCountry)
-final case class Users(users: Seq[User])
+final case class Users(users: Set[User])
+
 //#user-case-classes
 
 object UserRegistryActor {
   final case class ActionPerformed(description: String)
   final case object GetUsers
-  final case class CreateUser(user: User)
-  final case class GetUser(name: String)
-  final case class DeleteUser(name: String)
-  final case class InitializeUsers(allUsers: Set[User])
+//  final case class CreateUser(user: User)
+//  final case class GetUser(name: String)
+//  final case class DeleteUser(name: String)
+//  final case class InitializeUsers(allUsers: Set[User])
 
   def props: Props = Props[UserRegistryActor]
 }
 
 class UserRegistryActor extends Actor with ActorLogging {
   import UserRegistryActor._
+  import com.example.integrations.web.UserJson
 
   var users = Set.empty[User]
   var testUser = User(UserId(100), UserName("Joe Schmoe"), UserAge(42), UserCountry("Italy"))
@@ -54,18 +56,19 @@ class UserRegistryActor extends Actor with ActorLogging {
 
   def receive: Receive = {
     case GetUsers =>
-      sender() ! Users(users.toSeq)
-    case CreateUser(user) =>
-      users += user
-      sender() ! ActionPerformed(s"User ${user.name} created.")
-    case GetUser(name) =>
-      sender() ! users.find(_.name == name)
-    case DeleteUser(name) =>
-      users.find(_.name == name) foreach { user => users -= user }
-      sender() ! ActionPerformed(s"User ${name} deleted.")
-    case InitializeUsers(allUsers) =>
-      users = allUsers
-      sender() ! ActionPerformed(s"Users initialized.")
+      // sender() ! Users(users.toSeq)
+      sender() ! UserJson.fromUsers(Users(users))
+//    case CreateUser(user) =>
+//      users += user
+//      sender() ! ActionPerformed(s"User ${user.name} created.")
+//    case GetUser(name) =>
+//      sender() ! users.find(_.name == name)
+//    case DeleteUser(name) =>
+//      users.find(_.name == name) foreach { user => users -= user }
+//      sender() ! ActionPerformed(s"User ${name} deleted.")
+//    case InitializeUsers(allUsers) =>
+//      users = allUsers
+//      sender() ! ActionPerformed(s"Users initialized.")
   }
 }
 //#user-registry-actor

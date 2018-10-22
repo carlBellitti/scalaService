@@ -1,5 +1,4 @@
 package com.example.integrations.web
-import scala
 
 final case class UserJson(
   id: Int,
@@ -11,7 +10,7 @@ final case class UsersJson(users: Seq[UserJson])
 
 object UserJson {
 
-  import com.example.{User, Users}
+  import com.example.{User, Users, UserId, UserName, UserAge, UserCountry}
 
   def fromUser(user: User) = UserJson(
     user.id.value,
@@ -20,9 +19,12 @@ object UserJson {
     user.countryOfResidence.value)
   // map(_.map(MemberChangeTypeRow.toMemberChangeType))
   def fromUsers(users: Users): UsersJson = {
-    users.foreach((user: User) => println(user))
 
+    var usersSet = Set.empty[UserJson]
+    users.users.map {
+      case User(id: UserId, name:UserName, age:UserAge, country:UserCountry) =>
+        usersSet += UserJson(id.value, name.value, age.value, country.value)
     }
-
+    UsersJson(usersSet.toSeq)
   }
 }

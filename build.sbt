@@ -1,5 +1,6 @@
 lazy val akkaHttpVersion = "10.1.4"
-lazy val akkaVersion    = "2.5.16"
+lazy val akkaVersion     = "2.5.16"
+val circeVersion         = "0.9.3"
 
 lazy val root = (project in file(".")).
   settings(
@@ -21,8 +22,12 @@ lazy val root = (project in file(".")).
       "com.typesafe.slick" %% "slick" % "3.2.1",
       "org.slf4j" % "slf4j-nop" % "1.6.4",
       "com.typesafe.slick" %% "slick-hikaricp" % "3.2.1",
-      "mysql" % "mysql-connector-java" % "8.0.12"
+      "mysql" % "mysql-connector-java" % "8.0.12",
+      // JSON support
+      "io.circe" %% "circe-core" % circeVersion,
+      "io.circe" %% "circe-generic" % circeVersion,
+      "io.circe" %% "circe-parser" % circeVersion,
     )
   )
 
-  libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.24"
+  //libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.24"

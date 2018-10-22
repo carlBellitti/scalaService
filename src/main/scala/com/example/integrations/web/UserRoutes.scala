@@ -11,10 +11,12 @@ import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.util.Timeout
 import akka.pattern.ask
 import com.example.UserRegistryActor.{ActionPerformed, CreateUser, GetUsers}
+import com.example.application.JsonSupport
 import com.example.{User, Users}
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
+
 
 //#user-routes-class
 trait UserRoutes extends JsonSupport {
@@ -50,14 +52,8 @@ trait UserRoutes extends JsonSupport {
         pathEnd {
           concat(
             get {
-//              val users: Future[Users] =
-//                (userRegistryActor ? GetUsers).mapTo[Users]
-//              complete(users)
               val users: Future[UsersJson] =
-                (userRegistryActor ? GetUsers).map{user:User} => {
-
-
-              }
+                (userRegistryActor ? GetUsers).mapTo[UsersJson]
               complete(users)
             },
             post {
