@@ -21,7 +21,7 @@ final case class Users(users: Set[User])
 object UserRegistryActor {
   final case class ActionPerformed(description: String)
   final case object GetUsersJson
-//  final case class CreateUser(user: User)
+  final case class CreateUser(user: User)
 //  final case class GetUser(name: String)
 //  final case class DeleteUser(name: String)
 //  final case class InitializeUsers(allUsers: Set[User])

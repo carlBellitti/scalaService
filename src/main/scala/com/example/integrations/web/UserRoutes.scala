@@ -10,7 +10,7 @@ import akka.http.scaladsl.server.directives.PathDirectives.path
 import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.util.Timeout
 import akka.pattern.ask
-import com.example.UserRegistryActor.{ActionPerformed, CreateUser, GetUsers}
+import com.example.UserRegistryActor.{ActionPerformed, CreateUser, GetUsersJson}
 import com.example.application.JsonSupport
 import com.example.{User, Users}
 
@@ -53,7 +53,7 @@ trait UserRoutes extends JsonSupport {
           concat(
             get {
               val users: Future[UsersJson] =
-                (userRegistryActor ? GetUsers).mapTo[UsersJson]
+                (userRegistryActor ? GetUsersJson).mapTo[UsersJson]
               complete(users)
             },
             post {

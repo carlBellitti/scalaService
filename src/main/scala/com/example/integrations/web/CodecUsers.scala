@@ -12,14 +12,15 @@ object UserJson {
 
   import com.example.{User, Users, UserId, UserName, UserAge, UserCountry}
 
+  implicit val userJsonFormat = jsonFormat4(UserJson)
+
   def fromUser(user: User) = UserJson(
     user.id.value,
     user.name.value,
     user.age.value,
     user.countryOfResidence.value)
-  // map(_.map(MemberChangeTypeRow.toMemberChangeType))
-  def fromUsers(users: Users): UsersJson = {
 
+  def fromUsers(users: Users): UsersJson = {
     var usersSet = Set.empty[UserJson]
     users.users.map {
       case User(id: UserId, name:UserName, age:UserAge, country:UserCountry) =>
