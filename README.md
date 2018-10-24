@@ -19,7 +19,7 @@
 - However, I have only focused on one that is 'http://localhost:8080/users', and that is being leveraged to retrieve all of the users.
 - An additional route was added to serve static files (html) - 'http://localhost:8080/client' - this should display the index.html page that is in the 'resources/client' folder
 
-## Serving Static Files
+### Serving Static Files
 - Static files are served using the .../client' route.  Files are located in the 'resources/client' folder.  What is interesting, is that if you modify the static file (like index.html), you only have to re-run the service, not re-compile.
 
 ### Running
@@ -31,4 +31,13 @@
 - Populate the 'users' table as described above
 - Open a browser and navigate to 'http://localhost:8080/users', and you should see your data
 
+### Notes
+- The 'master' branch is basically the akka template with the addition of mysql (instead of h2) - this currently compiles and works - assuming you have a local sql database set up as described above
+- The 'refactor-test' branch is under construction - and more closely organized to how some of the newer maxwell Scala projects
+-- The UserRegistry actor is treated as the model and moved to the 'root' of the project
+-- The properties of 'User' were changed to custom properties (not primitives).
+-- Because of the custom 'User' properties, codecs were created to convert the model 'User' to and from 1) a database object (UserRow and UserRows) and 2) a marshallable JSON object with primitives (UsersJson and UsersJson)
+
+### Issues with the 'refactor-test' branch
+- The re-arranging of the files has introduced some errors - particularly related to the Spray JSON implementation
 
