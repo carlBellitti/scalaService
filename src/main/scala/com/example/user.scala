@@ -31,7 +31,7 @@ object UserRegistryActor {
 
 class UserRegistryActor extends Actor with ActorLogging {
   import UserRegistryActor._
-  import com.example.integrations.web.UserJson
+  import com.example.web.UserJson
 
   var users = Set.empty[User]
   var testUser = User(UserId(100), UserName("Joe Schmoe"), UserAge(42), UserCountry("Italy"))

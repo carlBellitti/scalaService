@@ -1,7 +1,8 @@
-package com.example.integrations.web
+package com.example.web
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.event.Logging
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{as, concat, entity, getFromResource, getFromResourceDirectory, onSuccess, pathEnd, pathEndOrSingleSlash, pathPrefix, redirectToTrailingSlashIfMissing}
 import akka.http.scaladsl.server.Route
@@ -11,15 +12,17 @@ import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.util.Timeout
 import akka.pattern.ask
 import com.example.UserRegistryActor.{ActionPerformed, CreateUser, GetUsersJson}
-import com.example.application.JsonSupport
 import com.example.{User, Users}
+import spray.json.DefaultJsonProtocol
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
 
 //#user-routes-class
-trait UserRoutes extends JsonSupport {
+trait UserRoutes extends SprayJsonSupport {
+
+  import Codecs._
   //#user-routes-class
 
   // we leave these abstract, since they will be provided by the App
