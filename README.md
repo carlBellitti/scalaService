@@ -34,7 +34,7 @@
 ### Notes
 - The 'master' branch is basically the akka template with the addition of mysql (instead of h2) - this currently compiles and works - assuming you have a local sql database set up as described above
 - The 'refactor-test' branch is under construction - and more closely organized to how some of the newer maxwell Scala projects
--- The UserRegistry actor is treated as the model and moved to the 'root' of the project
+-- The UserRegistry actor is treated as the model and moved to the 'root' of the project (renamed to 'users')
 -- The properties of 'User' were changed to custom properties (not primitives).
 -- Because of the custom 'User' properties, codecs were created to convert the model 'User' to and from 1) a database object (UserRow and UserRows) and 2) a marshallable JSON object with primitives (UsersJson and UsersJson)
 
