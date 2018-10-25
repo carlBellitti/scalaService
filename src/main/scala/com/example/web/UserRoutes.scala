@@ -3,6 +3,7 @@ package com.example.web
 import akka.actor.{ActorRef, ActorSystem}
 import akka.event.Logging
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{as, concat, entity, getFromResource, getFromResourceDirectory, onSuccess, pathEnd, pathEndOrSingleSlash, pathPrefix, redirectToTrailingSlashIfMissing}
 import akka.http.scaladsl.server.Route
@@ -58,17 +59,19 @@ trait UserRoutes extends SprayJsonSupport {
               val users: Future[UsersJson] =
                 (userRegistryActor ? GetUsersJson).mapTo[UsersJson]
               complete(users)
-            },
-            post {
-              entity(as[User]) { user =>
-                val userCreated: Future[ActionPerformed] =
-                  (userRegistryActor ? CreateUser(user)).mapTo[ActionPerformed]
-                onSuccess(userCreated) { performed =>
-                  log.info("Created user [{}]: {}", user.name, performed.description)
-                  complete((StatusCodes.Created, performed))
-                }
-              }
-            })
+            }
+//            ,
+//            post {
+//              entity(as[User]) { user =>
+//                val userCreated: Future[ActionPerformed] =
+//                  (userRegistryActor ? CreateUser(user)).mapTo[ActionPerformed]
+//                onSuccess(userCreated) { performed =>
+//                  log.info("Created user [{}]: {}", user.name, performed.description)
+//                  complete((StatusCodes.Created, performed))
+//                }
+//              }
+//            }
+          )
         }
         //#users-get-post
         //#users-get-delete

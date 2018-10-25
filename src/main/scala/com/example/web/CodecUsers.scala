@@ -29,12 +29,12 @@ object UserJson {
     user.age.value,
     user.countryOfResidence.value)
 
-  def fromUsers(users: Users): UsersJson = {
+  def fromUsers(users: Users): Set[UserJson] = {
     var usersSet = Set.empty[UserJson]
     users.users.map {
       case User(id: UserId, name:UserName, age:UserAge, country:UserCountry) =>
         usersSet += UserJson(id.value, name.value, age.value, country.value)
     }
-    UsersJson(usersSet.toSeq)
+    usersSet
   }
 }

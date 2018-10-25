@@ -42,7 +42,7 @@ class UserRegistryActor extends Actor with ActorLogging {
   u onComplete {
     case Success(results) => {
       results.foreach {
-        case UserRow(id: Int, name:String, age:Int, countryOfResidence:String) =>
+        case (id: Int, name:String, age:Int, countryOfResidence:String) =>
           println("id: " + id + ", name: " + name + ", age: " + age + ", country: " + countryOfResidence)
           val user = User(UserId(id), UserName(name), UserAge(age), UserCountry(countryOfResidence))
           users += user
@@ -57,7 +57,7 @@ class UserRegistryActor extends Actor with ActorLogging {
   def receive: Receive = {
     case GetUsersJson =>
       // sender() ! Users(users.toSeq)
-      sender() ! UserJson.fromUsers(Users(users))
+      sender() ! UserJson.fromUsers(Users(users)).toSeq
 //    case CreateUser(user) =>
 //      users += user
 //      sender() ! ActionPerformed(s"User ${user.name} created.")
